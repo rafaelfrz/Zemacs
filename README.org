@@ -1,0 +1,5 @@
+#+title: Personal Emacs Configuration
+#+author: Rafael Ferraz
+
+* Kemacs - Katsuo's Emacs
+I started using Emacs through Doom Emacs, now I'm building my personal Emacs configuration, building all from scratch
