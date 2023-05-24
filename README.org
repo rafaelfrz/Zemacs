@@ -1,5 +1,10 @@
 #+title: Zemacs
 #+author: Rafael Ferraz
+<<<<<<< HEAD
+=======
+
+#+begin_quote markdown
+>>>>>>> 4eb602d (não consigo ajeitar essa bosta)
  ______                  ______
 |  ____|                |___  /
 | |__ ___ _ __ _ __ __ _   / / 
