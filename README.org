@@ -1,7 +1,7 @@
 #+title: Zemacs
 #+author: Rafael Ferraz
 
-#+begin_quote
+#+begin_quote markdown
  ______                  ______
 |  ____|                |___  /
 | |__ ___ _ __ _ __ __ _   / / 
