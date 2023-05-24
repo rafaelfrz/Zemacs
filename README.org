@@ -1,10 +1,14 @@
 #+title: Zemacs
 #+author: Rafael Ferraz
+
+#+begin_quote
  ______                  ______
 |  ____|                |___  /
 | |__ ___ _ __ _ __ __ _   / / 
 |  __/ _ \ '__| '__/ _` | / /  
 | | |  __/ |  | | | (_| |/ /__ 
 |_|  \___|_|  |_|  \__,_/_____|
+
+#+end_quote
 
 I started using Emacs through Doom Emacs, now I'm building my personal Emacs configuration, building all from scratch
