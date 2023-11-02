@@ -130,15 +130,13 @@
 (scroll-bar-mode -1)      ;Disable toolbar
 (set-fringe-mode 8)
 
-(global-display-line-numbers-mode 1)
-
-(load-theme 'wombat t)
+(global-display-line-numbers-mode t)
 
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+                        ("org" . "https://orgmode.org/elpa/")
+			("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -174,6 +172,19 @@
   :config
   (ivy-mode 1))
 
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :bind (("M-x" . counsel-M-x)
+	 ("C-x b" . counsel-ibuffer)
+	 ("C-x C-f" . counsel-find-file)
+	 :map minibuffer-local-map
+	 ("C-r" . 'counsel-minibuffer-history))
+  :config
+  (setq ivy-initial-inputs-alist nil))
+
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -194,8 +205,20 @@
   (package-install 'evil))
 
 (use-package evil)
-(evil-mode 1)
+(evil-mode)
 
 (use-package all-the-icons)
+<<<<<<< HEAD
 >>>>>>> 989636b (first commit)
+<<<<<<< HEAD
 >>>>>>> 0d64f3b (first commitx)
+=======
+=======
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
+>>>>>>> cbd26be (mudança de nome :))
+>>>>>>> abe9d62 (socorrrrrro)
