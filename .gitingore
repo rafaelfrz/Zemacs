@@ -1,5 +1,6 @@
 .projectile
-elpa/*
-tutorial/*
 recentf
-autosavelist/*
+
+autosavelist/
+elpa/
+tutorial/
