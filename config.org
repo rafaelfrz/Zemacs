@@ -2,17 +2,21 @@
 #+AUTHOR: Rafael "Swordsmän" Ferraz
 #+OPTIONS: toc:2
 
-* TABLE OF CONTENTS :toc:
+* TABLE OF CONTENTS                                                                                                                                         :toc:
 - [[#emacs-configuration][Emacs configuration]]
   - [[#startup-configurations][Startup Configurations]]
+- [[#packages-configuration][Packages configuration]]
   - [[#dashboard][Dashboard]]
   - [[#evil-mode][Evil Mode]]
-  - [[#general-keybindings][General Keybindings]]
+  - [[#general][General]]
   - [[#treemacs][Treemacs]]
+  - [[#projectile][Projectile]]
 - [[#org-mode][Org Mode]]
+  - [[#agenda][Agenda]]
   - [[#deafult-org-configs][Deafult Org configs]]
   - [[#table-of-contents][Table of Contents]]
   - [[#org-bullets][Org Bullets]]
+  - [[#evil-org][Evil Org]]
 - [[#idk][IDK]]
 
 * Emacs configuration
@@ -114,7 +118,8 @@
     :config
     (setq which-key-idle-delay 0.3))
     #+end_src
-
+    
+* Packages configuration
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -137,62 +142,69 @@
   (evil-mode 1)
 #+end_src
 
-** General Keybindings
+** General
 #+begin_src emacs-lisp
   (use-package general
-	:config
-	(general-evil-setup))
+    :config
+    (general-evil-setup))
 
   (general-create-definer leader-key
-	:states '(normal insert visual emacs)
-	:prefix "SPC"
-	:keymaps 'override
-	:global-prefix "M-SPC"
-	)
+    :states '(normal insert visual emacs)
+    :prefix "SPC"
+    :keymaps 'override
+    :global-prefix "M-SPC")
 
   (general-define-key
    :keymaps 'override
-   "<tab>" 'org-cycle
-   )
+   "<tab>" 'org-cycle)
 
   (leader-key
-	"." '(find-file :wk "Find file")
-	"/" '(comment-line :wk "Comment line")
-    "s" '(dashboard-open :wk "Open dashboard")
-	)
+    "."  '(find-file :wk "Find file")
+    "/"  '(comment-line :wk "Comment line")
+    "\\" '(indent-region :wk "Indent region")
+    "s"  '(dashboard-open :wk "Opens dashboard"))
 
   (leader-key
-	"e" '(:ignore t :wk "Evaluate")
-	"e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-	"e r" '(eval-region :wk "Evaluate elisp in region"))
+    "e"   '(:ignore t :wk "Evaluate")
+    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+    "e r" '(eval-region :wk "Evaluate elisp in region"))
 
   (leader-key
-	"w" '(:ignore t :wk "Windows")
-	"w k" '(evil-window-up   :wk "Top window")
-	"w j" '(evil-window-down  :wk "Bottom window")
-	"w h" '(evil-window-left  :wk "Left window")
-	"w l" '(evil-window-right :wk "Right window")
-	"w n" '(:wk "New")
-	"w n v" '(split-window-horizontally :wk "New horizontal window")
-	"w n h" '(split-window-vertically   :wk "New vertical window"))
+    "a"   '(:ignore t :wk "Agenda")
+    "a a" '(org-agenda :wk "Opens agenda")
+    "a A" '(org-agenda-list :wk "Opens agenda list")
+    "a t" '(org-todo-list :wk "Opens todo list"))
 
   (leader-key
-	"d" '(:ignore t :wk "Delete")
-	"d b" '(image-kill-buffer :wk "Delete buffer")
-	"d w" '(:wk "Delete window")
-	"d w k" '(delete-window :wk "Delete window")
-	"d w K" '(kill-buffer-and-window :wk "Kill buffer and window"))
+    "w"     '(:ignore t :wk "Windows")
+    "w k"   '(evil-window-up   :wk "Top window")
+    "w j"   '(evil-window-down  :wk "Bottom window")
+    "w h"   '(evil-window-left  :wk "Left window")
+    "w l"   '(evil-window-right :wk "Right window")
+    "w n"   '(:wk "New")
+    "w n v" '(split-window-horizontally :wk "New horizontal window")
+    "w n h" '(split-window-vertically   :wk "New vertical window"))
 
   (leader-key
-	"h" '(:ignore t :wk "Help")
-	"h f" '(describe-function :wk "Describe function")
-	"h v" '(describe-variable :wk "Describe variable"))
+    "d"     '(:ignore t :wk "Delete")
+    "d b"   '(kill-current-buffer :wk "Delete buffer")
+    "d w"   '(:wk "Delete window")
+    "d w q" '(delete-window :wk "Delete window")
+    "d w Q" '(kill-buffer-and-window :wk "Kill buffer and window"))
 
   (leader-key
-	"b" '(ibuffer-jump :wk "Buffer list"))
+    "h"   '(:ignore t :wk "Help")
+    "h f" '(describe-function :wk "Describe function")
+    "h v" '(describe-variable :wk "Describe variable"))
 
   (leader-key
-	"t" '(treemacs :wk "Treemacs"))
+    "b"   '(:ignore t :wk "Buffer options")
+    "b b" '(counsel-switch-buffer :wk "Change buffer")
+    "b [" '(previous-buffer :wk "Go to previous buffer")
+    "b ]" '(next-buffer :wk "Go to next buffer"))
+
+  (leader-key
+    "t" '(treemacs :wk "Treemacs"))
 #+end_src
 
 ** Treemacs
@@ -317,10 +329,21 @@
     :config (treemacs-set-scope-type 'Tabs)))
 #+end_src
 
+** Projectile
+#+begin_src emacs_lisp
+  (projectile-mode t)
+#+end_src
+
 * Org Mode
+** Agenda
+#+begin_src emacs-lisp
+  (setq org-agenda-files '("~/Documents/Agenda.org"))
+  (setq org-directory nil)
+  (setq org-agenda-include-diary t)
+#+end_src
 ** Deafult Org configs
 #+begin_src emacs-lisp
-(setq org-src-preserve-identation t)
+  (setq org-src-preserve-identation t)
 #+end_src
 
 ** Table of Contents
@@ -337,6 +360,16 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
+** Evil Org
+#+begin_src emacs-lisp
+  (use-package evil-org
+     :ensure t
+     :after org
+     :hook (org-mode . (lambda () evil-org-mode))
+     :config
+     (require 'evil-org-agenda)
+     (evil-org-agenda-set-keys))
+#+end_src
 
 * IDK
 #+begin_src emacs-lisp

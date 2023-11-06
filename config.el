@@ -111,59 +111,66 @@
 (evil-mode 1)
 
 (use-package general
-      :config
-      (general-evil-setup))
+  :config
+  (general-evil-setup))
 
 (general-create-definer leader-key
-      :states '(normal insert visual emacs)
-      :prefix "SPC"
-      :keymaps 'override
-      :global-prefix "M-SPC"
-      )
+  :states '(normal insert visual emacs)
+  :prefix "SPC"
+  :keymaps 'override
+  :global-prefix "M-SPC")
 
 (general-define-key
  :keymaps 'override
- "<tab>" 'org-cycle
- )
+ "<tab>" 'org-cycle)
 
 (leader-key
-      "." '(find-file :wk "Find file")
-      "/" '(comment-line :wk "Comment line")
-  "s" '(dashboard-open :wk "Open dashboard")
-      )
+  "."  '(find-file :wk "Find file")
+  "/"  '(comment-line :wk "Comment line")
+  "\\" '(indent-region :wk "Indent region")
+  "s"  '(dashboard-open :wk "Opens dashboard"))
 
 (leader-key
-      "e" '(:ignore t :wk "Evaluate")
-      "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-      "e r" '(eval-region :wk "Evaluate elisp in region"))
+  "e"   '(:ignore t :wk "Evaluate")
+  "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+  "e r" '(eval-region :wk "Evaluate elisp in region"))
 
 (leader-key
-      "w" '(:ignore t :wk "Windows")
-      "w k" '(evil-window-up   :wk "Top window")
-      "w j" '(evil-window-down  :wk "Bottom window")
-      "w h" '(evil-window-left  :wk "Left window")
-      "w l" '(evil-window-right :wk "Right window")
-      "w n" '(:wk "New")
-      "w n v" '(split-window-horizontally :wk "New horizontal window")
-      "w n h" '(split-window-vertically   :wk "New vertical window"))
+  "a"   '(:ignore t :wk "Agenda")
+  "a a" '(org-agenda :wk "Opens agenda")
+  "a A" '(org-agenda-list :wk "Opens agenda list")
+  "a t" '(org-todo-list :wk "Opens todo list"))
 
 (leader-key
-      "d" '(:ignore t :wk "Delete")
-      "d b" '(image-kill-buffer :wk "Delete buffer")
-      "d w" '(:wk "Delete window")
-      "d w k" '(delete-window :wk "Delete window")
-      "d w K" '(kill-buffer-and-window :wk "Kill buffer and window"))
+  "w"     '(:ignore t :wk "Windows")
+  "w k"   '(evil-window-up   :wk "Top window")
+  "w j"   '(evil-window-down  :wk "Bottom window")
+  "w h"   '(evil-window-left  :wk "Left window")
+  "w l"   '(evil-window-right :wk "Right window")
+  "w n"   '(:wk "New")
+  "w n v" '(split-window-horizontally :wk "New horizontal window")
+  "w n h" '(split-window-vertically   :wk "New vertical window"))
 
 (leader-key
-      "h" '(:ignore t :wk "Help")
-      "h f" '(describe-function :wk "Describe function")
-      "h v" '(describe-variable :wk "Describe variable"))
+  "d"     '(:ignore t :wk "Delete")
+  "d b"   '(kill-current-buffer :wk "Delete buffer")
+  "d w"   '(:wk "Delete window")
+  "d w q" '(delete-window :wk "Delete window")
+  "d w Q" '(kill-buffer-and-window :wk "Kill buffer and window"))
 
 (leader-key
-      "b" '(ibuffer :wk "Buffer"))
+  "h"   '(:ignore t :wk "Help")
+  "h f" '(describe-function :wk "Describe function")
+  "h v" '(describe-variable :wk "Describe variable"))
 
 (leader-key
-      "t" '(treemacs :wk "Treemacs"))
+  "b"   '(:ignore t :wk "Buffer options")
+  "b b" '(counsel-switch-buffer :wk "Change buffer")
+  "b [" '(previous-buffer :wk "Go to previous buffer")
+  "b ]" '(next-buffer :wk "Go to next buffer"))
+
+(leader-key
+  "t" '(treemacs :wk "Treemacs"))
 
 (use-package treemacs
   :ensure t
@@ -221,7 +228,7 @@
           treemacs-user-mode-line-format           nil
           treemacs-user-header-line-format         nil
           treemacs-wide-toggle-width               70
-          treemacs-width                           35
+          treemacs-width                           30
           treemacs-width-increment                 1
           treemacs-width-is-initially-locked       t
           treemacs-workspace-switch-cleanup        nil)
@@ -284,6 +291,10 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs)))
 
+(setq org-agenda-files '("~/Documents/Agenda.org"))
+(setq org-directory nil)
+(setq org-agenda-include-diary t)
+
 (setq org-src-preserve-identation t)
 
 (use-package toc-org
@@ -293,6 +304,14 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(use-package evil-org
+   :ensure t
+   :after org
+   :hook (org-mode . (lambda () evil-org-mode))
+   :config
+   (require 'evil-org-agenda)
+   (evil-org-agenda-set-keys))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
