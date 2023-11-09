@@ -140,6 +140,7 @@
 #+begin_src emacs-lisp
   (use-package evil)
   (evil-mode 1)
+  (evil-undo-system 1)
 #+end_src
 
 ** General
@@ -165,6 +166,10 @@
     "s"  '(dashboard-open :wk "Opens dashboard"))
 
   (leader-key
+    "r"   '(:ignore t :wk "Restart Emacs")
+    "r r" '(restart-emacs :wk "Restart Emacs"))
+
+  (leader-key
     "e"   '(:ignore t :wk "Evaluate")
     "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
     "e r" '(eval-region :wk "Evaluate elisp in region"))
@@ -186,10 +191,12 @@
     "w n h" '(split-window-vertically   :wk "New vertical window"))
 
   (leader-key
-    "d"     '(:ignore t :wk "Delete")
-    "d b"   '(kill-current-buffer :wk "Delete buffer")
-    "d w"   '(:wk "Delete window")
-    "d w q" '(delete-window :wk "Delete window")
+    "d"     '(:ignore t :wk "Kill")
+    "d b"   '(:wk "Kill buffer options")
+    "d b b" '(kill-buffer :wk "Kill buffer from list")
+    "d b B" '(kill-current-buffer :wk "Kill current buffer")
+    "d w"   '(:wk "Kill window")
+    "d w q" '(delete-window :wk "Kill window")
     "d w Q" '(kill-buffer-and-window :wk "Kill buffer and window"))
 
   (leader-key
@@ -202,6 +209,11 @@
     "b b" '(counsel-switch-buffer :wk "Change buffer")
     "b [" '(previous-buffer :wk "Go to previous buffer")
     "b ]" '(next-buffer :wk "Go to next buffer"))
+
+  (leader-key
+    "o" '(:ignore t :wk "Org options")
+    "o t" '(:wk "Todo options")
+    "o t t" '(org-todo :wk "Cycle todo states"))
 
   (leader-key
     "t" '(treemacs :wk "Treemacs"))
@@ -340,6 +352,8 @@
   (setq org-agenda-files '("~/Documents/Agenda.org"))
   (setq org-directory nil)
   (setq org-agenda-include-diary t)
+  (setq org-todo-keywords
+        '((sequence "TODO" "TEST" "SEND" "|" "DONE")))
 #+end_src
 ** Deafult Org configs
 #+begin_src emacs-lisp
