@@ -5,7 +5,8 @@
 ;; Author: Alexander Miller <alexanderm@web.de>
 ;; Package-Requires: ((emacs "26.1") (cl-lib "0.5") (dash "2.11.0") (s "1.12.0") (ace-window "0.9.0") (pfuture "1.7") (hydra "0.13.2") (ht "2.2") (cfrs "1.3.2"))
 ;; Homepage: https://github.com/Alexander-Miller/treemacs
-;; Version: 3.1
+;; Package-Version: 20240815.1227
+;; Package-Revision: 488dfc0a3aa7
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

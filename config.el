@@ -1,6 +1,8 @@
 (add-to-list 'default-frame-alist '(fullscreen))
 (setq inhibit-start-message t) 
 (setq visible-bell nil)
+(setq has-battery
+      (when (file-exists-p "~/sys/class/power_supply/BAT0") t))
 ;; (set-face-attribute 'default t :font "JetBrainsMono Nerd Font Mono-10")
 ;; (set-frame-font "JetBrainsMono Nerd Font Mono-10" nil t)
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font Mono-10"))
@@ -10,7 +12,7 @@
 (tooltip-mode -1)         ;Disable tooltip
 (scroll-bar-mode -1)      ;Disable toolbar
 (visual-line-mode t)
-(when (file-exists-p "~/sys/class/power_supply/BAT0")
+(when has-battery
   (display-battery-mode t))
 (electric-pair-mode t)
 (setq nerd-icons-scale-factor 1.2)
@@ -23,8 +25,8 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+			 ("org" . "https://orgmode.org/elpa/")
+			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -45,18 +47,18 @@
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
+	 :map ivy-minibuffer-map
+	 ("TAB" . ivy-alt-done)	
+	 ("C-l" . ivy-alt-done)
+	 ("C-j" . ivy-next-line)
+	 ("C-k" . ivy-previous-line)
+	 :map ivy-switch-buffer-map
+	 ("C-k" . ivy-previous-line)
+	 ("C-l" . ivy-done)
+	 ("C-d" . ivy-switch-buffer-kill)
+	 :map ivy-reverse-i-search-map
+	 ("C-k" . ivy-previous-line)
+	 ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
 
@@ -66,10 +68,10 @@
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
+	 ("C-x b" . counsel-ibuffer)
+	 ("C-x C-f" . counsel-find-file)
+	 :map minibuffer-local-map
+	 ("C-r" . 'counsel-minibuffer-history))
   :config
   (setq ivy-initial-inputs-alist nil))
 
@@ -123,7 +125,7 @@
   :ensure t
   :init
   (doom-modeline-mode 1)
-  (when (file-exists-p "~/sys/class/power_supply/BAT0")
+  (when has-battery
     (setq doom-modeline-battery t))
   (setq doom-modeline-time t)
   (setq doom-modeline-icons t)
@@ -137,7 +139,7 @@
         doom-themes-enable-italic t)
   (load-theme 'doom-tokyo-night t)
 
-  (setq doom-themes-treemacs-theme "doom-tokyo-night")
+  ;; (setq doom-themes-treemacs-theme "doom-tokyo-night")
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 
