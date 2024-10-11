@@ -10,7 +10,8 @@
 (tooltip-mode -1)         ;Disable tooltip
 (scroll-bar-mode -1)      ;Disable toolbar
 (visual-line-mode t)
-(display-battery-mode t)
+(when (file-exists-p "~/sys/class/power_supply/BAT0")
+  (display-battery-mode t))
 (electric-pair-mode t)
 (setq nerd-icons-scale-factor 1.2)
 
@@ -96,7 +97,7 @@
   :init
   (dashboard-setup-startup-hook)
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-  (setq dashboard-startup-banner 2)
+  (setq dashboard-startup-banner 'logo)
   (setq dashboard-center-content t)
   (setq dashboard-display-icons t)
   (setq dashboard-icon-type 'all-the-icons)
@@ -122,7 +123,8 @@
   :ensure t
   :init
   (doom-modeline-mode 1)
-  (setq doom-modeline-battery t)
+  (when (file-exists-p "~/sys/class/power_supply/BAT0")
+    (setq doom-modeline-battery t))
   (setq doom-modeline-time t)
   (setq doom-modeline-icons t)
   (setq doom-modeline-lsp t)
