@@ -1,0 +1,1 @@
+("~/.config/emacs/" "~/Documents/Faculdade/" "~/Documents/mate/mate-api/" "~/Documents/mate/mate-web/")
