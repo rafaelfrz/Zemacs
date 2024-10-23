@@ -1,8 +1,0 @@
-* No Perspective
-** emacs
- - path :: ~/.config/emacs
-** Faculdade
- - path :: ~/Documents/Faculdade
-* No Tab
-** .config
- - path :: ~/.config

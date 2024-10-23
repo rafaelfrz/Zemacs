@@ -1,1 +1,0 @@
-((magit-status-jump nil))
