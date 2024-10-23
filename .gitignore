@@ -1,0 +1,16 @@
+# Files
+.projectile
+recentf
+\#config.el#
+.lsp-session-v1
+*projectile*
+recentf
+
+# Directories
+.cache/**
+auto-save-list/**
+elpa/**
+tutorial/**
+eshell/**
+transient/**
+url/**
