@@ -1,0 +1,7 @@
+.projectile
+recentf
+
+.cache/**
+autosavelist/**
+elpa/**
+tutorial/**
