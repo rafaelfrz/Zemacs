@@ -6,8 +6,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("~/.config/emacs/config.org"))
  '(package-selected-packages
-   '(sublimity-attractive sublimity-map sublimity-scroll sublimity tree-sitter-langs tree-sitter lsp-pyright company company-mode lua-mode darkroom zen-mode page-break-lines centered-cursor-mode toc-org which-key all-the-icons evil doom-themes doom-modeline counsel ivy-rich ivy command-log-mode use-package)))
+   '(all-the-icons centered-cursor-mode command-log-mode company
+				   company-box company-mode counsel darkroom
+				   doom-modeline doom-themes evil flycheck ivy
+				   ivy-rich js-mode lsp-pyright lua-mode
+				   page-break-lines sublimity sublimity-attractive
+				   sublimity-map sublimity-scroll toc-org tree-sitter
+				   tree-sitter-langs use-package which-key zen-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

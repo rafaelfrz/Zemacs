@@ -11,11 +11,11 @@
   - [[#theme][Theme]]
   - [[#magit][Magit]]
   - [[#evil-mode][Evil Mode]]
+  - [[#ivy-counsel--swiper][Ivy, Counsel & Swiper]]
   - [[#general-key-bindings][General (Key bindings)]]
   - [[#treemacs][Treemacs]]
   - [[#projectile][Projectile]]
   - [[#centered-cursor-mode][Centered Cursor Mode]]
-  - [[#company][Company]]
   - [[#darkroom][Darkroom]]
 - [[#org-mode][Org Mode]]
   - [[#agenda][Agenda]]
@@ -23,13 +23,13 @@
   - [[#table-of-contents][Table of Contents]]
   - [[#org-bullets][Org Bullets]]
   - [[#evil-org][Evil Org]]
-  - [[#sublimity][Sublimity]]
-- [[#coding][Coding]]
+- [[#programming][Programming]]
   - [[#language-server-protocol-lsp][Language Server Protocol (LSP)]]
-  - [[#treesitter][Treesitter]]
-  - [[#lua][Lua]]
-  - [[#python][Python]]
-  - [[#javascript][JavaScript]]
+  - [[#flycheck][Flycheck]]
+  - [[#tree-sitter][Tree-sitter]]
+  - [[#company][Company]]
+  - [[#sublimity][Sublimity]]
+  - [[#language-specific][Language Specific]]
 - [[#idk][IDK]]
 
 * Emacs configuration
@@ -51,6 +51,7 @@
   (tooltip-mode -1)         ;Disable tooltip
   (scroll-bar-mode -1)      ;Disable toolbar
   (visual-line-mode t)
+  (recentf-mode 1)
   (when has-battery
     (display-battery-mode t))
   (electric-pair-mode t)
@@ -83,42 +84,13 @@
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
   ;; Ivy
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done)	
-           ("C-l" . ivy-alt-done)
-           ("C-j" . ivy-next-line)
-           ("C-k" . ivy-previous-line)
-           :map ivy-switch-buffer-map
-           ("C-k" . ivy-previous-line)
-           ("C-l" . ivy-done)
-           ("C-d" . ivy-switch-buffer-kill)
-           :map ivy-reverse-i-search-map
-           ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-reverse-i-search-kill))
-    :config
-    (ivy-mode 1))
-
-  (use-package ivy-rich
-    :init
-    (ivy-rich-mode 1))
-
-  (use-package counsel
-    :bind (("M-x" . counsel-M-x)
-           ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history))
-    :config
-    (setq ivy-initial-inputs-alist nil))
 
   (unless (package-installed-p 'evil)
     (package-install 'evil))
 
   (use-package all-the-icons
-    :if (display-graphic-p))
+    :if (display-graphic-p)
+    :ensure t)
 
   (use-package nerd-icons
     :custom (nerd-icons-font-family "JetBrainsMono Nerd Font Mono"))
@@ -139,18 +111,22 @@
 #+begin_src emacs-lisp
   (use-package dashboard
     :ensure t
-    :init
+    :config
     (dashboard-setup-startup-hook)
     (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
     (setq dashboard-startup-banner 'logo)
     (setq dashboard-center-content t)
-    (setq dashboard-display-icons t)
-    (setq dashboard-icon-type 'all-the-icons)
+    ;; Icons
+    (setq dashboard-display-icons-p t)
+    (setq dashboard-icon-type 'nerd-icons)
+    (setq dashbaord-set-heading-icons t)
     (setq dashboard-set-file-icons t)
+    
+    (setq dashboard-navigation-cycle t)
     (setq dashboard-items '((recents . 5)
-                            (bookmarks . 3)
-                            (projects . 3)
-                            (agenda . 5)))
+                            (bookmarks . 5)
+                            (projects . 5)
+                            (agenda . 3)))
     (setq dashboard-startupify-list '(dashboard-insert-banner
                                       dashboard-insert-newline
                                       dashboard-insert-banner-title
@@ -161,8 +137,6 @@
                                       dashboard-insert-items
                                       dashboard-insert-newline
                                       dashboard-insert-footer)))
-  :config
-  (dashboard-setup-startup-hook)
 #+end_src
 
 ** Doom modeline
@@ -181,114 +155,153 @@
 
 ** Theme
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :ensure t
-    :config
-    (setq doom-themes-enable-bold t    
-          doom-themes-enable-italic t)
-    (load-theme 'doom-tokyo-night t)
+(use-package doom-themes
+:ensure t
+:config
+(setq doom-themes-enable-bold t    
+        doom-themes-enable-italic t)
+(load-theme 'doom-tokyo-night t)
 
-    ;; (setq doom-themes-treemacs-theme "doom-tokyo-night")
-    (doom-themes-treemacs-config)
-    (doom-themes-org-config))
+;; (setq doom-themes-treemacs-theme "doom-tokyo-night")
+(doom-themes-treemacs-config)
+(doom-themes-org-config))
 #+end_src
 
 ** Magit
 #+begin_src emacs-lisp
-  (use-package magit)
+(use-package magit)
 #+end_src
 
 ** Evil Mode
 #+begin_src emacs-lisp
-  (use-package evil)
-  (evil-mode 1)
+(use-package evil)
+(evil-mode 1)
+#+end_src
+
+** Ivy, Counsel & Swiper
+#+begin_src emacs-lisp
+  (use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+          :map ivy-minibuffer-map
+          ("C-l" . ivy-alt-done)
+          ("C-j" . ivy-next-line)
+          ("C-k" . ivy-previous-line)
+          :map ivy-switch-buffer-map
+          ("C-k" . ivy-previous-line)
+          ("C-l" . ivy-done)
+          ("C-d" . ivy-switch-buffer-kill)
+          :map ivy-reverse-i-search-map
+          ("C-k" . ivy-previous-line)
+          ("C-d" . ivy-reverse-i-search-kill))
+      :config
+      (ivy-mode 1))
+
+    (use-package ivy-rich
+      :init
+      (ivy-rich-mode 1))
+
+    (use-package counsel
+      :bind (("M-x" . counsel-M-x)
+             ("C-x b" . counsel-ibuffer)
+             ("C-x C-f" . counsel-find-file)
+             :map minibuffer-local-map
+             ("C-r" . 'counsel-minibuffer-history))
+      :config
+      (setq ivy-initial-inputs-alist nil))
 #+end_src
 
 ** General (Key bindings)
 #+begin_src emacs-lisp
-  (use-package general
-    :config
-    (general-evil-setup))
+      (use-package general
+        :config
+        (general-evil-setup))
 
-  (setq general-override-auto-enable t)
+      (setq general-override-auto-enable t)
 
-  (general-create-definer leader-key
-    :states '(normal insert visual emacs)
-    :prefix "SPC"
-    :keymaps 'override
-    :global-prefix "M-SPC")
+      (general-define-key
+       :states 'motion
+  	 "<tab>" 'evil-search-foward)
 
-  (general-define-key
-   :keymaps 'override
-   "<tab>" 'org-cycle)
+      (general-create-definer leader-key
+        :states '(normal insert visual emacs)
+        :prefix "SPC"
+        :keymaps 'override
+        :global-prefix "M-SPC")
 
-  (leader-key
-    "."  '(counsel-find-file :wk "Find file")
-    "/"  '(comment-line :wk "Comment line")
-    "\\" '(indent-region :wk "Indent region")
-    "s"  '(dashboard-refresh-buffer :wk "Opens dashboard"))
+      (add-hook 'org-mode-hook
+        (lambda()
+          (general-define-key
+           :keymaps 'org-mode-map
+           "<tab>" 'org-cycle)))
 
-  (leader-key
-    "r"   '(:ignore t :wk "Restart Emacs")
-    "r r" '(restart-emacs :wk "Restart Emacs"))
+      (leader-key
+        "."  '(counsel-find-file :wk "Find file")
+        "/"  '(comment-line :wk "Comment line")
+        "\\" '(indent-region :wk "Indent region")
+        "s"  '(dashboard-refresh-buffer :wk "Opens dashboard"))
 
-  (leader-key
-    "e"   '(:ignore t :wk "Evaluate")
-    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-    "e r" '(eval-region :wk "Evaluate elisp in region"))
+      (leader-key
+        "r"   '(:ignore t :wk "Restart Emacs")
+        "r r" '(restart-emacs :wk "Restart Emacs"))
 
-  (leader-key
-    "a"   '(:ignore t :wk "Agenda")
-    "a a" '(org-agenda :wk "Opens agenda")
-    "a A" '(org-agenda-list :wk "Opens agenda list")
-    "a t" '(org-todo-list :wk "Opens todo list"))
+      (leader-key
+        "e"   '(:ignore t :wk "Evaluate")
+        "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+        "e r" '(eval-region :wk "Evaluate elisp in region"))
 
-  (leader-key
-    "w"     '(:ignore t :wk "Windows")
-    "w k"   '(evil-window-up   :wk "Top window")
-    "w j"   '(evil-window-down  :wk "Bottom window")
-    "w h"   '(evil-window-left  :wk "Left window")
-    "w l"   '(evil-window-right :wk "Right window")
-    "w n"   '(:wk "New")
-    "w n h" '(split-window-horizontally :wk "New horizontal window")
-    "w n v" '(split-window-vertically   :wk "New vertical window"))
+      (leader-key
+        "a"   '(:ignore t :wk "Agenda")
+        "a a" '(org-agenda :wk "Opens agenda")
+        "a A" '(org-agenda-list :wk "Opens agenda list")
+        "a t" '(org-todo-list :wk "Opens todo list"))
 
-  (leader-key
-    "d"     '(:ignore t :wk "Kill")
-    "d b"   '(:wk "Kill buffer options")
-    "d b b" '(kill-buffer :wk "Kill buffer from list")
-    "d b B" '(kill-current-buffer :wk "Kill current buffer")
-    "d w"   '(:wk "Kill window")
-    "d w q" '(delete-window :wk "Kill window")
-    "d w Q" '(kill-buffer-and-window :wk "Kill buffer and window"))
+      (leader-key
+        "w"     '(:ignore t :wk "Windows")
+        "w k"   '(evil-window-up   :wk "Top window")
+        "w j"   '(evil-window-down  :wk "Bottom window")
+        "w h"   '(evil-window-left  :wk "Left window")
+        "w l"   '(evil-window-right :wk "Right window")
+        "w n"   '(:wk "New")
+        ;; "w n h" '(split-window-horizontally :wk "New horizontal window")
+        "w n v" '(split-window-vertically   :wk "New vertical window"))
 
-  (leader-key
-    "h"   '(:ignore t :wk "Help")
-    "h f" '(describe-function :wk "Describe function")
-    "h v" '(describe-variable :wk "Describe variable"))
+      (leader-key
+        "d"     '(:ignore t :wk "Kill")
+        "d b"   '(:wk "Kill buffer options")
+        "d b b" '(kill-buffer :wk "Kill buffer from list")
+        "d b B" '(kill-current-buffer :wk "Kill current buffer")
+        "d w"   '(:wk "Kill window")
+        "d w q" '(delete-window :wk "Kill window")
+        "d w Q" '(kill-buffer-and-window :wk "Kill buffer and window"))
 
-  (leader-key
-    "b"   '(:ignore t :wk "Buffer options")
-    "b b" '(counsel-switch-buffer :wk "Change buffer")
-    "b h" '(previous-buffer :wk "Go to previous buffer")
-    "b l" '(next-buffer :wk "Go to next buffer"))
+      (leader-key
+        "h"   '(:ignore t :wk "Help")
+        "h f" '(describe-function :wk "Describe function")
+        "h v" '(describe-variable :wk "Describe variable"))
 
-  (leader-key
-    "o" '(:ignore t :wk "Org options")
-    "o t" '(:wk "Todo options")
-    "o t t" '(org-todo :wk "Cycle todo states")
-    "o e" '(org-edit-special :wk "Opens a window with the Babel source block"))
+      (leader-key
+        "b"   '(:ignore t :wk "Buffer options")
+        "b b" '(counsel-switch-buffer :wk "Change buffer")
+        "b h" '(previous-buffer :wk "Go to previous buffer")
+        "b l" '(next-buffer :wk "Go to next buffer"))
 
-  (leader-key
-    "t" '(:ignore t :wk "Treemacs")
-    "t t" '(treemacs :wk "Open Treemacs"))
+      (leader-key
+        "o" '(:ignore t :wk "Org options")
+        "o t" '(:wk "Todo options")
+        "o t t" '(org-todo :wk "Cycle todo states")
+        "o e" '(org-edit-special :wk "Opens a window with the Babel source block"))
 
-  (leader-key
-    "m" '(:ignore t :wk "Magit")
-    "m s" '(magit-status :wk "Magit status"))
+      (leader-key
+        "t" '(:ignore t :wk "Treemacs")
+        "t t" '(treemacs :wk "Open Treemacs"))
 
-  (leader-key
-    "z" '(darkroom-mode :wk "Distraction free editing"))
+      (leader-key
+        "m" '(:ignore t :wk "Magit")
+        "m s" '(magit-status :wk "Magit status"))
+
+      (leader-key
+        "z" '(darkroom-mode :wk "Distraction free editing"))
 #+end_src
 
 ** Treemacs
@@ -417,7 +430,6 @@
   (projectile-mode t)
 #+end_src
 
-
 ** Centered Cursor Mode
 #+begin_src emacs-lisp
   (use-package centered-cursor-mode
@@ -427,13 +439,8 @@
     (global-centered-cursor-mode))
 #+end_src
 
-** Company
-#+begin_src emacs-lisp
-  (use-package company)
-#+end_src
-
 ** Darkroom
-#+begin_src emacs_lisp
+#+begin_src emacs-lisp
   (use-package darkroom)
 #+end_src
 * Org Mode
@@ -475,56 +482,52 @@
     (evil-org-agenda-set-keys))
 #+end_src
 
+* Programming
+** Language Server Protocol (LSP)
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :hook 
+((js-mode . lsp)
+(lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+#+end_src
+
+** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+end_src
+
+** Tree-sitter
+#+begin_src emacs-lisp
+  (use-package tree-sitter)
+  (use-package tree-sitter-langs)
+#+end_src
+
+** Company
+#+begin_src emacs-lisp
+  (use-package company
+    :hook (javascript-mode . company-mode)
+    :config
+    (setq company-minimun-prefixlength 1)
+    (setq company-idle-delay 0.0))
+
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+#+end_src
+
 ** Sublimity
 #+begin_src emacs-lisp
   (use-package sublimity
-    :hook (prog-mode . sublimity-mode)
+    :hook (javascript-mode . sublimity-mode)
     :config
     (setq sublimity-map-size 20)
     (setq sublimity-map-set-delay nil)
     (setq sublimity-attractive-centering-width nil))
 #+end_src
 
-* Coding
-** Language Server Protocol (LSP)
-#+begin_src emacs-lisp
-  (use-package lsp-mode
-    :init
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    (setq lsp-keymap-prefix "C-c l")
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-           (lua-mode . lsp-deffered)
-           (javascript-mode . lsp-deferred)
-           ;; if you want which-key integration
-           (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
-#+end_src
-
-** Treesitter
-#+begin_src emacs-lisp
-  (use-package tree-sitter)
-  (use-package tree-sitter-langs)
-#+end_src
-** Lua
-#+begin_src emacs-lisp
-  (use-package lua-mode)
-#+end_src
-
-** Python
-#+begin_src emacs-lisp
-  (use-package lsp-pyright
-    :ensure t
-    :custom (lsp-pyright-langserver-command "pyright")
-    :hook
-    (python-mode . (lambda ()
-                     (require 'lsp-pyright
-                              (lsp-deferred)))))
-#+end_src
-
-** JavaScript
-#+begin_src emacs-lisp
-
-#+end_src
 * IDK
 #+begin_src emacs-lisp
   (custom-set-variables
