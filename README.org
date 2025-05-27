@@ -12,9 +12,9 @@
 * My own Emacs configuration
 Started using Emacs through Doom Emacs, now I want to do my own configuration fine tuned to my tastes.
 
-* TODO
-** [ ] - Finish configuring LSP
-** [ ] - Add better file editing configurations
-** [ ] - Configure Treemacs
-** [ ] - Configure Dashboard
-** [ ] - Configure Org Mode
+* TO DO
+- [ ] - Finish configuring LSP
+- [ ] - Add better file editing configurations
+- [ ] - Configure Treemacs
+- [ ] - Configure Dashboard
+- [ ] - Configure Org Mode
