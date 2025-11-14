@@ -6,6 +6,11 @@ config.el
 .lsp-session-v1
 *projectile*
 recentf
+/#init.el#
+%backup%~
+init.el.bak
+init.el~
+tramp
 
 # Directories
 .cache/**
@@ -15,3 +20,4 @@ tutorial/**
 eshell/**
 transient/**
 url/**
+eln-cache/**

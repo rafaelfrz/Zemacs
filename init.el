@@ -5,7 +5,7 @@
       (let ((battery-dir "~/sys/class/power_supply/BAT0/"))
         (when (file-exists-p battery-dir)
           (not (null (directory-files battery-dir nill ""))))))
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font Mono-10"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font Mono-12"))
 
 (menu-bar-mode -1)        ;Disable menubar
 (tool-bar-mode -1)        ;Disable toolbar
@@ -69,8 +69,7 @@
 
 ;; Dashboard
 (use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
+  :after all-the-icons
   :init
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   (setq dashboard-startup-banner 'logo)
@@ -98,7 +97,21 @@
 									(bookmarks . "m")
 									(projects  . "p")
 									(agenda    . "a")
-									(registers . "e"))))
+									(registers . "e")))
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-navigator-buttons
+        `((
+          (,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+            "Homepage"
+            "Browse homepage"
+            (lambda (&rest _) (browse-url "https://github.com")))
+          (,(all-the-icons-faicon "code" :height 1.1 :v-adjust 0.0)
+            "LeetCode"
+            "Go to LeetCode"
+            (lambda (&rest _) (browse-url "https://leetcode.com")))))
+  )
+)
 
 ;; Doom Modeline
 (use-package doom-modeline
@@ -384,8 +397,8 @@
 
 (use-package darkroom)
 
-;; (setq org-agenda-files '("~/Documents/org"))
-(setq org-directory '("~/Documents/org"))
+(setq org-agenda-files '("~/Documents/org/"))
+;; (setq org-directory "~/Documents/org/")
 (setq org-agenda-include-diary t)
 (setq org-todo-keywords
       '((sequence "TODO" "DOING" "ON HOLD" "|" "DONE")))
@@ -426,11 +439,14 @@
   :init (global-flycheck-mode))
 
 (use-package tree-sitter
-  :config
-  (global-tree-sitter-mode))
+  :ensure t
+  :hook (prog-mode . tree-sitter-mode))
 
-(use-package tree-sitter-langs)
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+
+;;(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 (use-package company
   :hook
@@ -448,12 +464,11 @@
   :init
   (setq minimap-width-fraction 0.10
 		minimap-minimum-width 10
-		minimap-window-location 'right)
-  (setq minimap-major-modes '(prog-mode))
+		minimap-window-location 'right
+		minimap-hide-fringes t
+		minimap-major-modes '(prog-mode))
   :hook
-  (after-init . minimap-mode)
-  :config
-  (advice-add #'minimap-new-minimap :after #'minimap--disable-fringe-indicator))
+  (after-init . minimap-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
