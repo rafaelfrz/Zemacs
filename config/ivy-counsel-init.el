@@ -31,14 +31,13 @@
 (use-package ivy-posframe
   :after ivy
   :config
-  (ivy-posframe-mode 1)
-
   (setq ivy-posframe-display-functions-alist
         '((t . ivy-posframe-display-at-frame-center)))
-
+	(setq ivy-posframe-height-alist '((t      . 20)))
   (setq ivy-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
+        '((left-fringe . 1)
+          (right-fringe . 1)))
   (setq ivy-posframe-width 60
-        ivy-posframe-height 15
-        ivy-posframe-border-width 10))
+        ivy-posframe-height 20
+        ivy-posframe-border-width 8)
+  (ivy-posframe-mode 1))
