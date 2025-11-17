@@ -13,8 +13,9 @@
 Started using Emacs through Doom Emacs, now I want to do my own configuration fine tuned to my tastes.
 
 * TO DO
-- [ ] - Finish configuring LSP
-- [ ] - Add better file editing configurations
-- [ ] - Configure Treemacs
-- [ ] - Configure Dashboard
-- [ ] - Configure Org Mode
+- [/] Configuring some langs
+  - [ ] C/C++
+  - [ ] Typescript
+  - [ ] Lua
+  - [ ] Java
+- [ ] More keybindings

@@ -11,6 +11,8 @@ recentf
 init.el.bak
 init.el~
 tramp
+*~
+#*#
 
 # Directories
 .cache/**
