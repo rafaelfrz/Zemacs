@@ -5,6 +5,7 @@
 (load "~/.config/Zemacs/config/which-key-init.el")
 (load "~/.config/Zemacs/config/centered-cursor-mode-init.el")
 (load "~/.config/Zemacs/config/general-init.el")
+(load "~/.config/Zemacs/config/projectile-init.el")
 (load "~/.config/Zemacs/config/treemacs-init.el")
 (load "~/.config/Zemacs/config/doom-init.el")
 (load "~/.config/Zemacs/config/lsp-init.el")

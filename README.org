@@ -19,3 +19,6 @@ Started using Emacs through Doom Emacs, now I want to do my own configuration fi
   - [ ] Lua
   - [ ] Java
 - [ ] More keybindings
+- [ ] Configure Treemacs
+- [ ] Configure Projectile
+- [ ] Make configuration for indentation

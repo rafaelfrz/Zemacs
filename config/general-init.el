@@ -80,8 +80,7 @@
 (leader-key
   "t" '(:ignore t :wk "Treemacs")
   "t t" '(treemacs :wk "Open Treemacs")
-  "t f" '(treemacs-find-file :wk "Find file in Treemacs")
-  "t T" '(treemacs-add-and-display-current-project-exclusively :wk "Show current directory in Treemacs"))
+  "t f" '(treemacs-find-file :wk "Find file in Treemacs"))
 
 (leader-key
   "m" '(:ignore t :wk "Magit")
@@ -92,3 +91,6 @@
 
 (leader-key
   "z" '(darkroom-mode :wk "Distraction free editing"))
+
+(leader-key
+	"p" '(projectile-command-map :wk "Projectile"))

@@ -1,10 +1,11 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
-  (setq gc-cons-threshold 100000000)
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-				 (lsp-mode . typescript-ts-mode)
-				 (lsp-mode . javascript-mode))
+				 (typescript-ts-mode . lsp)
+				 (tsx-ts-mode . lsp)
+				 (js-ts-mode . lsp)
+				 (js-mode . lsp))
   :commands lsp
   :config (setq lsp-headerline-breadcrumb-enable t
 								lsp-enable-snippet t
